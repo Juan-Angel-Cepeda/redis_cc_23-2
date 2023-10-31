@@ -4,7 +4,12 @@ const redis = require('redis');
 
 async function list(req,res,next){
     const client = redis.createClient({
-        host:'redis://localhost:6379',
+        host:process.env.REDIS_HOST,
+        port:process.env.REDIS_PORT
+    });
+
+    client.on('error',(err)=>{
+        console.log('Error connecting to Redis',err);
     });
     
     try{
@@ -47,7 +52,7 @@ async function get(req,res,next){
 
     }catch(err){
         console.log(err);
-        res.status(500).send('Internal server error');
+        res.status(500).send('Internal server error',err);
     
     }finally{
         await client.quit();
