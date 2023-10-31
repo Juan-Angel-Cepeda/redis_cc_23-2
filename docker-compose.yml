@@ -1,0 +1,11 @@
+vesion: '1'
+services:
+ app-redis1:
+  build: .
+  image: redis-rick-and-moryt:1.0.0
+  ports:
+   - 3000:3000
+  environment:
+   - .env
+  
+
