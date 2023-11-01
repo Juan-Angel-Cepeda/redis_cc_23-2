@@ -3,6 +3,10 @@ const axios = require('axios');
 const redis = require('redis');
 
 async function list(req,res,next){
+
+    console.log("Redis Host: ",process.env.REDIS_HOST);
+    console.log("Redis Port: ",process.env.REDIS_PORT);
+
     const client = redis.createClient({
         host:process.env.REDIS_HOST,
         port:process.env.REDIS_PORT
