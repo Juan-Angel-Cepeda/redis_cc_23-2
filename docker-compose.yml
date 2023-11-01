@@ -3,6 +3,7 @@ services:
  app-redis1:
   build: .
   image: redis-rick-and-moryt:1.1.3
+  ports:
    - 3000:3000
   environment:
    - .env
