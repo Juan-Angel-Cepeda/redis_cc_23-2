@@ -24,13 +24,13 @@ async function list(req,res,next){
         
         if(cachedCharacters){
             console.log('Datos obtenidos de redis');
-            //return res.json(JSON.parse(cachedCharacters));    
+            return res.json(JSON.parse(cachedCharacters));    
+        }else{
+            const response = await axios.get('https://rickandmortyapi.com/api/character');
+            await client.set('characters',JSON.stringify(response.data));
+            console.log('Datos guardados en redis');
+            res.json(response.data);
         }
-        const response = await axios.get('https://rickandmortyapi.com/api/character');
-        await client.set('characters',JSON.stringify(response.data));
-        console.log('Datos guardados en redis');
-        res.json(response.data);
-        
     }catch(err){
         console.log(err);
         res.status(500).send('Internal server error');
@@ -42,8 +42,10 @@ async function list(req,res,next){
 async function get(req,res,next){
     id = req.params.id;
     const client = redis.createClient({
-        host:process.env.REDIS_HOST,
-        port:process.env.REDIS_PORT
+        socket:{
+            host:process.env.REDIS_HOST,
+            port:process.env.REDIS_PORT
+        }
     });
 
     client.on('error',(err)=>{
@@ -56,13 +58,13 @@ async function get(req,res,next){
         
         if(cachedCharacter){
             console.log('Datos obtenidos de redis');
-            //return res.json(JSON.parse(cachedCharacter));    
+            return res.json(JSON.parse(cachedCharacter));    
+        }else{
+            const response = await axios.get(`https://rickandmortyapi.com/api/character/${id}`);
+            await client.set(`characters/${id}`,JSON.stringify(response.data));
+            console.log('Datos guardados en redis');
+            res.json(response.data);
         }
-        
-        const response = await axios.get(`https://rickandmortyapi.com/api/character/${id}`);
-        await client.set(`characters/${id}`,JSON.stringify(response.data));
-        console.log('Datos guardados en redis');
-        res.json(response.data);
         
     }catch(err){
         console.log(err);
