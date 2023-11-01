@@ -2,9 +2,8 @@ version: '3.8'
 services:
  app-redis1:
   build: .
-  image: redis-rick-and-moryt:1.1.1
+  image: redis-rick-and-moryt:1.1.2
   ports:
    - 3000:3000
   environment:
-   - REDIS_HOST=redis-cloud.iu4twb.ng.0001.use2.cache.amazonaws.com
-   - REDIS_PORT=6379
+   - .env

@@ -8,8 +8,10 @@ async function list(req,res,next){
     console.log("Redis Port: ",process.env.REDIS_PORT);
 
     const client = redis.createClient({
-        host:process.env.REDIS_HOST,
-        port:process.env.REDIS_PORT
+        socket:{
+            host:process.env.REDIS_HOST,
+            port:process.env.REDIS_PORT
+        }
     });
 
     client.on('error',(err)=>{
